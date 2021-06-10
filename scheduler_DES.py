@@ -1,11 +1,11 @@
 debug = False
-#tiny      8:00:00 = 480 minutes
+#tiny      8:00:00 = 240 minutes
 #short  1-00:00:00 = 1440
 #defq* 14-00:00:00 =
 
 
 NANO_TIME_LIMIT = 30
-TINY_TIME_LIMIT = 480
+TINY_TIME_LIMIT = 240
 SHORT_TIME_LIMIT = 1440
 # Total Nodes for CPU jobs = 160
 AVAILABLE_NODES = 160
@@ -174,17 +174,17 @@ run_sum = np.sum(run_time)
 run_mean = np.average(run_time)
 run_med = np.median(run_time)
 
-if rank == 0:
-        print("Mode %s, Defq %d, Short %d, Tiny %d, Nano %d :: Short TL %d, Tiny TL %d, Nano TL %d" %(MODE,NUM_OF_DEFQ_NODES,NUM_OF_SHORT_NODES,NUM_OF_TINY_NODES,NUM_OF_NANO_NODES,SHORT_TIME_LIMIT,TINY_TIME_LIMIT,NANO_TIME_LIMIT))
-        print("DefQ 50th %.2f 75th %.2f 95th %.2f " % (stats[0]/3600,stats[1]/3600,stats[2]/3600))
-        print("Number of Jobs in defq %d, aggregate run time %.2f [hrs], agg run time/node %.2f" %(len(df),run_sum/3600,run_sum/3600/NUM_OF_DEFQ_NODES))
-if rank == 1:
-        print("Short 50th %.2f 75th %.2f 95th %.2f " % (stats[0]/3600,stats[1]/3600,stats[2]/3600))
-        print("Number of Jobs in short %d, aggregate run time %.2f [hrs], agg run time/node %.2f " %(len(df),run_sum/3600,run_sum/3600/NUM_OF_SHORT_NODES))
-if rank == 2:
-        print("Tiny 50th %.2f 75th %.2f 95th %.2f " % (stats[0]/3600,stats[1]/3600,stats[2]/3600))
-        print("Number of Jobs in tiny %d, aggregate run time %.2f [hrs], agg run time/node %.2f " %(len(df),run_sum/3600,run_sum/3600/NUM_OF_TINY_NODES))
-if rank == 3:
-        print("Nano 50th %.2f 75th %.2f 95th %.2f " % (stats[0]/3600,stats[1]/3600,stats[2]/3600))
-        print("Number of Jobs in nano %d, aggregate run time %.2f [hrs], agg run time/node %.2f " %(len(df),run_sum/3600,run_sum/3600/NUM_OF_NANO_NODES))
+comm.Barrier()
+stats=comm.gather(stats, root=0)
+jobdata=comm.gather(len(df),root=0)
+run_sum=comm.gather(run_sum,root=0)
 
+total_jobs = comm.reduce(len(df), op=MPI.SUM,root=0)
+if rank == 0:
+	print("Mode %s, Defq %d, Short %d, Tiny %d, Nano %d :: Short TL %d, Tiny TL %d, Nano TL %d" %(MODE,NUM_OF_DEFQ_NODES,NUM_OF_SHORT_NODES,NUM_OF_TINY_NODES,NUM_OF_NANO_NODES,SHORT_TIME_LIMIT,TINY_TIME_LIMIT,NANO_TIME_LIMIT))
+	print("Total Jobs %d" %(total_jobs))
+	print("Part\t50th\t75th\t95th\tNumJobs\tagg_RT\tagg_RT/node")
+	print("Defq\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[0][0]/3600,stats[0][1]/3600,stats[0][2]/3600,jobdata[0],run_sum[0]/3600,run_sum[0]/3600/NUM_OF_DEFQ_NODES))
+	print("Short\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[1][0]/3600,stats[1][1]/3600,stats[1][2]/3600,jobdata[1],run_sum[1]/3600,run_sum[1]/3600/NUM_OF_SHORT_NODES))
+	print("Tiny\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[2][0]/3600,stats[2][1]/3600,stats[2][2]/3600,jobdata[2],run_sum[2]/3600,run_sum[2]/3600/NUM_OF_TINY_NODES))
+	print("Nano\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[3][0]/3600,stats[3][1]/3600,stats[3][2]/3600,jobdata[3],run_sum[3]/3600,run_sum[3]/3600/NUM_OF_NANO_NODES))
