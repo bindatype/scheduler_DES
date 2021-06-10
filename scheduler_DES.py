@@ -201,16 +201,8 @@ total_jobs = comm.reduce(len(df), op=MPI.SUM,root=0)
 if rank == 0:
 	print("Mode %s, Defq %d, Short %d, Tiny %d, Nano %d :: Short TL %d, Tiny TL %d, Nano TL %d" %(MODE,NUM_OF_DEFQ_NODES,NUM_OF_SHORT_NODES,NUM_OF_TINY_NODES,NUM_OF_NANO_NODES,SHORT_TIME_LIMIT,TINY_TIME_LIMIT,NANO_TIME_LIMIT))
 	print("Total Jobs %d" %(total_jobs))
-<<<<<<< HEAD
 	print("Part\t50th\t75th\t95th\tNumJobs\tagg_RT\tagg_RT/node")
 	print("Defq\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[0][0]/3600,stats[0][1]/3600,stats[0][2]/3600,jobdata[0],run_sum[0]/3600,run_sum[0]/3600/NUM_OF_DEFQ_NODES))
 	print("Short\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[1][0]/3600,stats[1][1]/3600,stats[1][2]/3600,jobdata[1],run_sum[1]/3600,run_sum[1]/3600/NUM_OF_SHORT_NODES))
 	print("Tiny\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[2][0]/3600,stats[2][1]/3600,stats[2][2]/3600,jobdata[2],run_sum[2]/3600,run_sum[2]/3600/NUM_OF_TINY_NODES))
 	print("Nano\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[3][0]/3600,stats[3][1]/3600,stats[3][2]/3600,jobdata[3],run_sum[3]/3600,run_sum[3]/3600/NUM_OF_NANO_NODES))
-=======
-	print("Part 50th  75th   95th  NumJobs  agg_runtime agg_runtime/node")
-	print("Defq %.2f %.2f %.2f %d %.2f %.2f" % (stats[0][0]/3600,stats[0][1]/3600,stats[0][2]/3600,jobdata[0],run_sum[0]/3600,run_sum[0]/3600/NUM_OF_DEFQ_NODES))
-	print("Short %.2f %.2f %.2f %d %.2f %.2f" % (stats[1][0]/3600,stats[1][1]/3600,stats[1][2]/3600,jobdata[1],run_sum[1]/3600,run_sum[1]/3600/NUM_OF_SHORT_NODES))
-	print("Tiny %.2f %.2f %.2f %d %.2f %.2f" % (stats[2][0]/3600,stats[2][1]/3600,stats[2][2]/3600,jobdata[2],run_sum[2]/3600,run_sum[2]/3600/NUM_OF_TINY_NODES))
-	print("Nano %.2f %.2f %.2f %d %.2f %.2f" % (stats[3][0]/3600,stats[3][1]/3600,stats[3][2]/3600,jobdata[3],run_sum[3]/3600,run_sum[3]/3600/NUM_OF_NANO_NODES))
->>>>>>> cd5f7633cf84b1b87f54e6c142f9240206cf4be7
