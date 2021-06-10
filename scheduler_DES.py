@@ -72,7 +72,7 @@ TOTAL_NUM_OF_NODES = NUM_OF_DEFQ_NODES+NUM_OF_SHORT_NODES+NUM_OF_TINY_NODES+NUM_
 if TOTAL_NUM_OF_NODES != AVAILABLE_NODES:
 	if rank == 0:
 		print("Number of CPU nodes must equal 160!")
-	exit(1)
+#	exit(1)
 
 #Maximum SLURM Priority
 # Priority increases with increasing size in SLURM
@@ -133,11 +133,13 @@ if debug:
 
 NUM_OF_JOBS = len(df)
 
+submit_time = []
 wait_time  = []
 run_time = []
 
 def job(env,JobID,SubmitTime,RunTime,Priority,Partition,Timelimit,InterArrival,NCPUS,node):
     queued = env.now
+    submit_time.append(queued)
     with node.request(priority=np.absolute(Priority-MAX_SLURM_PRIO)) as req:
         yield req
         wait_time.append(env.now - queued)
@@ -147,9 +149,7 @@ def job(env,JobID,SubmitTime,RunTime,Priority,Partition,Timelimit,InterArrival,N
 def run_jobs(env):
     for i in range(NUM_OF_JOBS):
     	yield env.timeout(df['InterArrival'][i]) # Change to waittime at some point?
-    	tic = env.now
     	env.process(job(env, df['JobID'][i],df['SubmitTime'][i],df['RunTime'][i],df['Priority'][i],df['Partition'][i],df['Timelimit'][i],df['InterArrival'][i],df['NCPUS'], node=node))    
-    	toc = env.now
 
 
 
@@ -174,6 +174,7 @@ run_sum = np.sum(run_time)
 run_mean = np.average(run_time)
 run_med = np.median(run_time)
 
+
 comm.Barrier()
 stats=comm.gather(stats, root=0)
 jobdata=comm.gather(len(df),root=0)
@@ -184,7 +185,7 @@ if rank == 0:
 	print("Mode %s, Defq %d, Short %d, Tiny %d, Nano %d :: Short TL %d, Tiny TL %d, Nano TL %d" %(MODE,NUM_OF_DEFQ_NODES,NUM_OF_SHORT_NODES,NUM_OF_TINY_NODES,NUM_OF_NANO_NODES,SHORT_TIME_LIMIT,TINY_TIME_LIMIT,NANO_TIME_LIMIT))
 	print("Total Jobs %d" %(total_jobs))
 	print("Part\t50th\t75th\t95th\tNumJobs\tagg_RT\tagg_RT/node")
-	print("Defq\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[0][0]/3600,stats[0][1]/3600,stats[0][2]/3600,jobdata[0],run_sum[0]/3600,run_sum[0]/3600/NUM_OF_DEFQ_NODES))
-	print("Short\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[1][0]/3600,stats[1][1]/3600,stats[1][2]/3600,jobdata[1],run_sum[1]/3600,run_sum[1]/3600/NUM_OF_SHORT_NODES))
-	print("Tiny\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[2][0]/3600,stats[2][1]/3600,stats[2][2]/3600,jobdata[2],run_sum[2]/3600,run_sum[2]/3600/NUM_OF_TINY_NODES))
-	print("Nano\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[3][0]/3600,stats[3][1]/3600,stats[3][2]/3600,jobdata[3],run_sum[3]/3600,run_sum[3]/3600/NUM_OF_NANO_NODES))
+	print("defq\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[0][0]/3600,stats[0][1]/3600,stats[0][2]/3600,jobdata[0],run_sum[0]/3600,run_sum[0]/3600/NUM_OF_DEFQ_NODES))
+	print("short\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[1][0]/3600,stats[1][1]/3600,stats[1][2]/3600,jobdata[1],run_sum[1]/3600,run_sum[1]/3600/NUM_OF_SHORT_NODES))
+	print("tiny\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[2][0]/3600,stats[2][1]/3600,stats[2][2]/3600,jobdata[2],run_sum[2]/3600,run_sum[2]/3600/NUM_OF_TINY_NODES))
+	print("nano\t%.2f\t%.2f\t%.2f\t%d\t%.2f\t%.2f" % (stats[3][0]/3600,stats[3][1]/3600,stats[3][2]/3600,jobdata[3],run_sum[3]/3600,run_sum[3]/3600/NUM_OF_NANO_NODES))
