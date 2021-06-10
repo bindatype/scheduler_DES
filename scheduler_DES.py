@@ -173,25 +173,7 @@ stats=np.percentile(wait_time, [50, 75, 95])
 run_sum = np.sum(run_time)
 run_mean = np.average(run_time)
 run_med = np.median(run_time)
-<<<<<<< HEAD
 
-=======
-'''
-if rank == 0:
-        print("Mode %s, Defq %d, Short %d, Tiny %d, Nano %d :: Short TL %d, Tiny TL %d, Nano TL %d" %(MODE,NUM_OF_DEFQ_NODES,NUM_OF_SHORT_NODES,NUM_OF_TINY_NODES,NUM_OF_NANO_NODES,SHORT_TIME_LIMIT,TINY_TIME_LIMIT,NANO_TIME_LIMIT))
-        print("DefQ 50th %.2f 75th %.2f 95th %.2f " % (stats[0]/3600,stats[1]/3600,stats[2]/3600))
-        print("Number of Jobs in defq %d, aggregate run time %.2f [hrs], agg run time/node %.2f" %(len(df),run_sum/3600,run_sum/3600/NUM_OF_DEFQ_NODES))
-if rank == 1:
-        print("Short 50th %.2f 75th %.2f 95th %.2f " % (stats[0]/3600,stats[1]/3600,stats[2]/3600))
-        print("Number of Jobs in short %d, aggregate run time %.2f [hrs], agg run time/node %.2f " %(len(df),run_sum/3600,run_sum/3600/NUM_OF_SHORT_NODES))
-if rank == 2:
-        print("Tiny 50th %.2f 75th %.2f 95th %.2f " % (stats[0]/3600,stats[1]/3600,stats[2]/3600))
-        print("Number of Jobs in tiny %d, aggregate run time %.2f [hrs], agg run time/node %.2f " %(len(df),run_sum/3600,run_sum/3600/NUM_OF_TINY_NODES))
-if rank == 3:
-        print("Nano 50th %.2f 75th %.2f 95th %.2f " % (stats[0]/3600,stats[1]/3600,stats[2]/3600))
-        print("Number of Jobs in nano %d, aggregate run time %.2f [hrs], agg run time/node %.2f " %(len(df),run_sum/3600,run_sum/3600/NUM_OF_NANO_NODES))
-'''
->>>>>>> cd5f7633cf84b1b87f54e6c142f9240206cf4be7
 comm.Barrier()
 stats=comm.gather(stats, root=0)
 jobdata=comm.gather(len(df),root=0)
