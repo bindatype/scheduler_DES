@@ -16,6 +16,6 @@ All arguments are required
 	-t Number of 384 nodes
 	-n Number of nano nodes
 	-p Fraction resampled. Negative number to skip.
-Example: mpiexec -n 4 python3 scheduler_DES.py -f $NAME -d 54 -n 30 -p -1
+Example: NAME=example_data.txt; time mpiexec -n 3 python3 dev2.py -f $NAME -d 125 -n 15  -t 24 -p 1
 	There should be as many mpi processes as there are partitions.  
 
