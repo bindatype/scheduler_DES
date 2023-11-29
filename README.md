@@ -58,7 +58,7 @@ though those jobs are being resampled as a member of a smaller population. Inste
 ||||||||| -> ||||| Duty cycle stays the same
 ti      tf   ti  tf
 ```
-- we get half the jobs over the same time period. The simulated cluster will have plenty of downtime to dequeue jobs. 
+we get half the jobs over the same time period. The simulated cluster will have plenty of downtime to dequeue jobs. 
 ```
 ||||||||| -> || |  || | Duty cycle decreases 
 ti      tf   ti       tf
