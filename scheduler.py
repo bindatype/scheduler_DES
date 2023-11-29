@@ -106,8 +106,6 @@ for opt, arg in opts:
 	elif opt in ['-h']:
 		usage()
 
-TOTAL_NUM_OF_NODES = NUM_OF_DEFQ_NODES+NUM_OF_NANO_NODES+NUM_OF_384_NODES
-
 df_init  = LoadDataFrame(input_file=INPUT_FILE)
 
 # Each worker should project out their own dataframe from the master dataframe.
@@ -160,12 +158,14 @@ MAX_SLURM_PRIO = 4294967295
 
 env = simpy.Environment()
 if rank == 0:
-	node = simpy.PriorityResource(env, capacity = NUM_OF_DEFQ_NODES)
+	NUM_NODES=NUM_OF_DEFQ_NODES
 if rank == 1:
-	node = simpy.PriorityResource(env, capacity = NUM_OF_NANO_NODES)
+	NUM_NODES=NUM_OF_NANO_NODES
 if rank == 2:
-	node = simpy.PriorityResource(env, capacity = NUM_OF_384_NODES)
+	NUM_NODES=NUM_OF_384_NODES
 
+# Begin the simulation
+node = simpy.PriorityResource(env, capacity = NUM_NODES)
 env.process(run_jobs(env))
 env.run()
 
