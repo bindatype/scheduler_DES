@@ -49,4 +49,12 @@ runtime per node.
 Resampling doesn't quite work the way one would expect and that is because the actual historical submit times are used by the simulation as 
 submit times for the virtual jobs. Randomly removing say, half the jobs, lightens the duty factor of the simuation nodes by half and 
 percentiles look very small. This is because the dequeue times for those jobs that are sampled are still those from the historical record even
-though, those jobs are being resampled as a member of a smaller population. 
+though those jobs are being resampled as a member of a smaller population. 
+
+For two overlapping partitions, A and B, the intersection of those partitions A ∩ B is not handled yet. By the time the dataframes are created
+in each process, it has already been decided if the job will be processed in A or B so there's really no place for the intersection of 
+partitions as the code is written. There's probably some clever work-around to the issue but nothing that exists presently.
+
+The partitions in the command line options are not flexible. If you want to use the 384gb option then you must use the nano option. Nano is
+mapped to rank 1 and 384gb is mapped to rank 2.   
+
