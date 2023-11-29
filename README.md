@@ -54,12 +54,15 @@ runtime per node.
 submit times for the virtual jobs. Randomly removing say, half the jobs, lightens the duty factor of the simuation nodes by half and 
 percentiles look very small. This is because the dequeue times for those jobs that are sampled are still those from the historical record even
 though those jobs are being resampled as a member of a smaller population. Instead of 
+```
 ||||||||| -> |||||
 ti      tf   ti  tf
+```
 we get half the jobs over the same time period. The simulated cluster will have plenty of downtime to dequeue jobs. 
+```
 ||||||||| -> || |  || |
 ti      tf   ti       tf
-
+```
 
 * For two overlapping partitions, A and B, the intersection of those partitions A ∩ B is not handled yet. By the time the dataframes are created
 in each process, it has already been decided if the job will be processed in A or B so there's really no place for the intersection of 
