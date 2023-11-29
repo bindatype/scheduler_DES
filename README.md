@@ -62,3 +62,5 @@ partitions as the code is written. There's probably some clever work-around to t
 The partitions in the command line options are not flexible. If you want to use the 384gb option then you must use the nano option. Nano is
 mapped to rank 1 and 384gb is mapped to rank 2.   
 
+Doesn't handle true MPI-style jobs where a job requiring N nodes will wait until all N nodes are free before dequeueing while this simulation
+simply addes N jobs, each with identical parameters (such as submit time) to the event generator.   
