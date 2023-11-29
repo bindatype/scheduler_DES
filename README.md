@@ -1,7 +1,12 @@
 # scheduler_DES
-A project to replay a High Performance Computer's job history but allowing to alter the number of partitions or nodes within a partition. 
+A project to replay a High Performance Computer's job history but allowing for varying the number of partitions or nodes within a partition. 
+The result can be used to make informed estimates for how changes to a cluster's inventory of nodes may impact the amount of time jobs spend
+waiting to dequeue. 
+ 
+For example, one might ask how adding 5 more GPU nodes might relieve job pressure, what is the effect interactive allocations are having on 
+job throughput, or if timelimits are reasonable, all based on actual historical job data collected from SLURM's sacct command.  
 
-## Set up a conda env:
+## Getting Started: Setting up a conda env
 
 ```
 conda create --name scheduler_DES -y
