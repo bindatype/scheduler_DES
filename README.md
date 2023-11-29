@@ -24,4 +24,13 @@ All arguments are required
 Example: NAME=example_data.txt; mpiexec -n 3 python3 scheduler.py -f $NAME -d 125 -n 15 -t 24 -p 1
 	There should be as many mpi processes as there are partitions.  
 ```
-
+## Invoking the Simulation and Output
+Invocation and output will appear similar to 
+```
+$ NAME=example_data.txt; mpiexec -n 3 python3 scheduler.py -f $NAME -d 125 -n 15  -t 24
+#Reading from  example_data.txt
+#Part	25th	50th	75th	95th	NumJobs	agg_RT	agg_RT/node	node-count
+defq	0.80	5.43	48.25	326.79	49079	545272	4362	125
+nano	0.73	3.41	8.65	27.84	80920	7264	484	15
+384gb	0.00	13.17	75.92	176.33	2047	50334	2097	24
+```
