@@ -27,7 +27,7 @@ def run_jobs(env):
     for i in range(NUM_OF_JOBS):
 
 ## This line simulates the time since the last job was submitted...the interval between submissions.
-## It is from this line that we get the submission history/pattern from Pegasus.
+## It is from this line that we encorporate the submission history/pattern from actual job data.
         yield env.timeout(df['InterArrival'][i]) 
 
 ## Added loop for multinode jobs and to approximate mpi jobs.
