@@ -45,3 +45,8 @@ nano	0.73	3.41	8.65	27.84	80920	7264	484	15
 The output includes the 25th, 50th, 75th, and 95th percentiles for time spent waiting to dequeue as well as aggregate runtime and aggregate
 runtime per node. 
 
+## Limitations
+Resampling doesn't quite work the way one would expect and that is because the actual historical submit times are used by the simulation as 
+submit times for the virtual jobs. Randomly removing say, half the jobs, lightens the duty factor of the simuation nodes by half and 
+percentiles look very small. This is because the dequeue times for those jobs that are sampled are still those from the historical record even
+though, those jobs are being resampled as a member of a smaller population. 
