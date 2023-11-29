@@ -1,7 +1,7 @@
-#scheduler_DES
+# scheduler_DES
+A project to replay a High Performance Computer's job history but allowing to alter the number of partitions or nodes within a partition. 
 
-
-##Set up a conda env:
+## Set up a conda env:
 
 ```
 conda create --name scheduler_DES -y
