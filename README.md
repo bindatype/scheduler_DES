@@ -2,12 +2,16 @@
 A project to replay a High Performance Computer's job history but allowing for varying the number of partitions or nodes within a partition. 
 The result can be used to make informed estimates for how changes to a cluster's inventory of nodes may impact the amount of time jobs spend
 waiting to dequeue. 
- 
-For example, one might ask how adding 5 more GPU nodes might relieve job pressure, what is the effect interactive allocations are having on 
-job throughput, or if timelimits are reasonable, all based on actual historical job data collected from SLURM's sacct command.  
+
+
+## Introduction
+Suppose you have a 40-node or 500-node SLURM cluster (the actual number of nodes doesn't matter) that you have been operating for some 
+amount of time, say one year, and you want to investigate how adding 10 or 20 more nodes might relieve job pressure and shorten wait times. 
+Additionally, one might inquire as to what is the effect interactive allocations are having on job throughput or if timelimits are 
+reasonable; all based on actual historical job data collected from SLURM's sacct command. 
 
 ## Getting Started: Setting up a conda env
-
+To get started using scheduler_DES make sure you have set up and environment with the following packages:
 ```
 conda create --name scheduler_DES -y
 conda activate scheduler_DES
