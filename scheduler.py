@@ -99,20 +99,14 @@ for opt, arg in opts:
 		NUM_OF_DEFQ_NODES = int(arg)
 	elif opt in ['-t']:
 		NUM_OF_384_NODES = int(arg)
-	elif opt in ['-p']:
-		FRACTION=float(arg)
 	elif opt in ['-n']:
 		NUM_OF_NANO_NODES = int(arg)
+	elif opt in ['-p']:
+		FRACTION=float(arg)
 	elif opt in ['-h']:
 		usage()
 
 TOTAL_NUM_OF_NODES = NUM_OF_DEFQ_NODES+NUM_OF_NANO_NODES+NUM_OF_384_NODES
-
-#Maximum SLURM Priority
-# Priority increases with increasing size in SLURM
-# but priority increases with decreasing size in Simpy
-# so there must be a linear transformation.
-MAX_SLURM_PRIO = 4294967295
 
 df_init  = LoadDataFrame(input_file=INPUT_FILE)
 
@@ -124,7 +118,8 @@ if rank == 1:
 if rank == 2:
 	df = df_init[(df_init.Partition.str.endswith("384gb"))]
 
-if len(df) == 0:
+NUM_OF_JOBS = len(df)
+if NUM_OF_JOBS == 0:
 	print("One or more processes failed because it's dataframe had zero length.")
 	comm.Abort()
 
@@ -152,11 +147,16 @@ if debug:
 if debug:
     print(df[df['InterArrival'].isnull()]) 
 
-NUM_OF_JOBS = len(df)
 
 submit_time = []
 wait_time  = []
 run_time = []
+
+# Maximum SLURM Priority
+# Priority increases with increasing size in SLURM
+# but priority increases with decreasing size in Simpy
+# so there must be a linear transformation.
+MAX_SLURM_PRIO = 4294967295
 
 env = simpy.Environment()
 if rank == 0:
