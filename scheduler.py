@@ -110,11 +110,11 @@ df_init  = LoadDataFrame(input_file=INPUT_FILE)
 
 # Each worker should project out their own dataframe from the master dataframe.
 if rank == 0:
-	df = df_init[((df_init.Timelimit > NANO_TIME_LIMIT)) & (df_init.RunTime >= 5)]
+	df = df_init[((df_init.Timelimit > NANO_TIME_LIMIT)) & (df_init.RunTime > 0) &  (~df_init.Partition.str.endswith("384gb"))]
 if rank == 1:
-	df = df_init[((df_init.Timelimit <= NANO_TIME_LIMIT))  & (df_init.RunTime >= 5)]
+	df = df_init[((df_init.Timelimit <= NANO_TIME_LIMIT))  & (df_init.RunTime > 0) & (~df_init.Partition.str.endswith("384gb"))]
 if rank == 2:
-	df = df_init[(df_init.Partition.str.endswith("384gb"))]
+	df = df_init[(df_init.Partition.str.endswith("384gb"))  & (df_init.RunTime > 0)]
 
 NUM_OF_JOBS = len(df)
 if NUM_OF_JOBS == 0:
@@ -185,7 +185,7 @@ total_jobs = comm.reduce(len(df), op=MPI.SUM,root=0)
 
 ## We're done. Print out summary.
 if rank == 0:
-	#print("#Total Jobs %d" %(total_jobs))
+	print("#Total Jobs %d" %(total_jobs))
 	print("#Part\t25th\t50th\t75th\t95th\tNumJobs\tagg_RT\tagg_RT/node\tnode-count")
 	print("defq\t%.2f\t%.2f\t%.2f\t%.2f\t%d\t%.0f\t%.0f\t%d" % (
 		stats[0][0]/3600,stats[0][1]/3600,stats[0][2]/3600,stats[0][3]/3600,
