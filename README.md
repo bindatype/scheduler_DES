@@ -1,5 +1,5 @@
 # scheduler_DES
-A project to replay a High Performance Computer's job history but allowing for varying the number of partitions or nodes within a partition. 
+A project to replay a High Performance Computer's job history while allowing for varying the number of partitions or nodes within a partition. 
 The result can be used to make informed estimates for how changes to a cluster's inventory of nodes may impact the amount of time jobs spend
 waiting to dequeue. 
 
@@ -55,12 +55,12 @@ submit times for the virtual jobs. Randomly removing say, half the jobs, lighten
 percentiles look very small. This is because the dequeue times for those jobs that are sampled are still those from the historical record even
 though those jobs are being resampled as a member of a smaller population. Instead of 
 ```
-||||||||| -> |||||
+||||||||| -> ||||| Duty cycle stays the same
 ti      tf   ti  tf
 ```
 we get half the jobs over the same time period. The simulated cluster will have plenty of downtime to dequeue jobs. 
 ```
-||||||||| -> || |  || |
+||||||||| -> || |  || | Duty cycle decreases 
 ti      tf   ti       tf
 ```
 
