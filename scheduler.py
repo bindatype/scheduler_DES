@@ -110,11 +110,16 @@ df_init  = LoadDataFrame(input_file=INPUT_FILE)
 
 # Each worker should project out their own dataframe from the master dataframe.
 if rank == 0:
-	df = df_init[((df_init.Timelimit > NANO_TIME_LIMIT)) & (df_init.RunTime > 0) &  (~df_init.Partition.str.endswith("384gb"))]
+	df = df_init[((df_init.Timelimit > NANO_TIME_LIMIT)) 
+		& (df_init.RunTime > 0) 
+		&  (~df_init.Partition.str.endswith("384gb"))]
 if rank == 1:
-	df = df_init[((df_init.Timelimit <= NANO_TIME_LIMIT))  & (df_init.RunTime > 0) & (~df_init.Partition.str.endswith("384gb"))]
+	df = df_init[((df_init.Timelimit <= NANO_TIME_LIMIT))  
+		& (df_init.RunTime > 0) 
+		& (~df_init.Partition.str.endswith("384gb"))]
 if rank == 2:
-	df = df_init[(df_init.Partition.str.endswith("384gb"))  & (df_init.RunTime > 0)]
+	df = df_init[(df_init.Partition.str.endswith("384gb"))  
+		& (df_init.RunTime > 0)]
 
 NUM_OF_JOBS = len(df)
 if NUM_OF_JOBS == 0:
