@@ -29,6 +29,9 @@ All arguments are required
 Example: NAME=example_data.txt; mpiexec -n 3 python3 scheduler.py -f $NAME -d 125 -n 15 -t 24 -p 1
 	There should be as many mpi processes as there are partitions.  
 ```
+In the above example, we requested that jobs summarized in example_data.txt were processed with 125 defq nodes, 15 nano nodes, and 24 384gb
+nodes. And the resampling parameter, p, was set to 1.  
+
 ## Invoking the Simulation and Output
 Invocation and output will appear similar to 
 ```
@@ -39,3 +42,6 @@ defq	0.80	5.43	48.25	326.79	49079	545272	4362	125
 nano	0.73	3.41	8.65	27.84	80920	7264	484	15
 384gb	0.00	13.17	75.92	176.33	2047	50334	2097	24
 ```
+The output includes the 25th, 50th, 75th, and 95th percentiles for time spent waiting to dequeue as well as aggregate runtime and aggregate
+runtime per node. 
+
