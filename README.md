@@ -67,6 +67,7 @@ ti      tf   ti       tf
 * For two overlapping partitions, A and B, the intersection of those partitions A ∩ B is not handled yet. By the time the dataframes are created
 in each process, it has already been decided if the job will be processed in A or B so there's really no place for the intersection of 
 partitions as the code is written. There's probably some clever work-around to the issue but nothing that exists presently.
+-Update - this functionality has been added to overlay.py
 
 * The partitions in the command line options are not flexible. If you want to use the 384gb option then you must use the nano option. Nano is
 mapped to rank 1 and 384gb is mapped to rank 2.   
