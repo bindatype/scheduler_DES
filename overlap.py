@@ -171,15 +171,16 @@ run_mean_defq = np.average(run_time_defq)
 run_mean_384g = np.average(run_time_384g)
 run_med_defq = np.median(run_time_defq)
 run_med_384g = np.median(run_time_384g)
-jobdata=len(df)
+jobdata_defq=len(wait_time_defq)
+jobdata_384g=len(wait_time_384g)
 
 ## We're done. Print out summary.
 print("#Part\t25th\t50th\t75th\t95th\tNumJobs\tagg_RT\tagg_RT/node\tnode-count")
 print("defq\t%.2f\t%.2f\t%.2f\t%.2f\t%d\t%.0f\t%.0f\t%d" % (
 	stats_defq[0]/3600,stats_defq[1]/3600,stats_defq[2]/3600,stats_defq[3]/3600,
-	jobdata,run_sum_defq/3600,run_sum_defq/3600/NUM_OF_DEFQ_NODES,NUM_OF_DEFQ_NODES))
+	jobdata_defq,run_sum_defq/3600,run_sum_defq/3600/NUM_OF_DEFQ_NODES,NUM_OF_DEFQ_NODES))
 print("384gb\t%.2f\t%.2f\t%.2f\t%.2f\t%d\t%.0f\t%.0f\t%d" % (
 	stats_384g[0]/3600,stats_384g[1]/3600,stats_384g[2]/3600,stats_384g[3]/3600,
-	jobdata,run_sum_384g/3600,run_sum_384g/3600/NUM_OF_384_NODES,NUM_OF_384_NODES))
+	jobdata_384g,run_sum_384g/3600,run_sum_384g/3600/NUM_OF_384_NODES,NUM_OF_384_NODES))
 
 
